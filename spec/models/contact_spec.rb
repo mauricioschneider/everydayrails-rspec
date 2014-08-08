@@ -3,11 +3,7 @@ require 'spec_helper'
 describe Contact do
 
   it "is valid with a firstname, lastname and email" do
-    contact = Contact.new(
-      firstname:  "Aaron",
-      lastname:   "Sumner",
-      email:      "tester@example.com"
-      )
+    contact = Contact.new(firstname:  "Aaron", lastname:   "Sumner", email:      "tester@example.com")
     expect(contact).to be_valid
   end
 
@@ -29,5 +25,20 @@ describe Contact do
     expect(contact).to have(1).errors_on(:email)
   end
 
-  it "returns a contact's full name as string"
+  it "returns a contact's full name as string" do
+    contact = Contact.new(firstname:  "Aaron", lastname:   "Sumner", email:      "tester@example.com")
+    expect(contact.name).to eq 'Aaron Sumner'
+  end
+
+  it "returns a sorted array of results that match" do
+    smith = Contact.create(firstname: "John", lastname: "Smith", email: "jsmith@example.com")
+    jones = Contact.create(firstname: "John", lastname: "Jones", email: "jjones@example.com")
+    johnson = Contact.create(firstname: "John", lastname: "Johnson", email: "jjohnson@example.com")
+
+    contacts = Contact.by_letter("J")
+
+    expect(contacts).to eq [johnson, jones]
+    expect(contacts).to_not include smith
+  end
+
 end
