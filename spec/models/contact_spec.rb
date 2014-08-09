@@ -2,31 +2,38 @@ require 'spec_helper'
 
 describe Contact do
 
+  it "has a valid factory" do
+    expect(FactoryGirl.build(:contact)).to be_valid
+  end
+
   it "is valid with a firstname, lastname and email" do
-    contact = Contact.new(firstname:  "Aaron", lastname:   "Sumner", email:      "tester@example.com")
+    contact = Contact.new(firstname:  "Aaron", lastname: "Sumner", email: "tester@example.com")
     expect(contact).to be_valid
   end
 
   it "is invalid without a firstname" do
-    expect(Contact.new(firstname: nil)).to have(1).errors_on(:firstname)
+    contact = FactoryGirl.build(:contact, firstname: nil)
+    expect(contact).to have(1).errors_on(:firstname)
   end
 
   it "is invalid without a lastname" do
-    expect(Contact.new(lastname: nil)).to have(1).errors_on(:lastname)
+    contact = FactoryGirl.build(:contact, lastname: nil)
+    expect(contact).to have(1).errors_on(:lastname)
   end
 
   it "is invalid without an email address" do
-    expect(Contact.new(email: nil)).to have(1).errors_on(:email)
+    contact = FactoryGirl.build(:contact, email: nil)
+    expect(contact).to have(1).errors_on(:email)
   end
 
   it "is invalid with a duplicated email address" do
-    Contact.create(firstname: "Joe", lastname: "Tester", email: "tester@example.com")
-    contact = Contact.create(firstname: "Jane", lastname: "Tester", email: "tester@example.com")
+    FactoryGirl.create(:contact, email: "tester@example.com")
+    contact = FactoryGirl.build(:contact, email: "tester@example.com")
     expect(contact).to have(1).errors_on(:email)
   end
 
   it "returns a contact's full name as string" do
-    contact = Contact.new(firstname:  "Aaron", lastname:   "Sumner", email:      "tester@example.com")
+    contact = FactoryGirl.build(:contact, firstname: "Aaron", lastname: "Sumner")
     expect(contact.name).to eq 'Aaron Sumner'
   end
 
