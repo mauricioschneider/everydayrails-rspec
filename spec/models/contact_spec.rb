@@ -30,15 +30,27 @@ describe Contact do
     expect(contact.name).to eq 'Aaron Sumner'
   end
 
-  it "returns a sorted array of results that match" do
-    smith = Contact.create(firstname: "John", lastname: "Smith", email: "jsmith@example.com")
-    jones = Contact.create(firstname: "John", lastname: "Jones", email: "jjones@example.com")
-    johnson = Contact.create(firstname: "John", lastname: "Johnson", email: "jjohnson@example.com")
+  describe "filter last name by letter" do
 
-    contacts = Contact.by_letter("J")
+    before :each do
+      @smith = Contact.create(firstname: "John", lastname: "Smith", email: "jsmith@example.com")
+      @jones = Contact.create(firstname: "John", lastname: "Jones", email: "jjones@example.com")
+      @johnson = Contact.create(firstname: "John", lastname: "Johnson", email: "jjohnson@example.com")
+      @contacts = Contact.by_letter("J")
+    end
 
-    expect(contacts).to eq [johnson, jones]
-    expect(contacts).to_not include smith
+    context "matching letters" do
+      it "returns a sorted array of results that match" do
+        expect(@contacts).to eq [@johnson, @jones]
+      end
+    end
+
+    context "non-matching letters" do
+      it "returns a sorted array of results that match" do
+        expect(@contacts).to_not include @smith
+      end
+    end
+
   end
 
 end
