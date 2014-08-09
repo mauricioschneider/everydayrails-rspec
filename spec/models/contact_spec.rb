@@ -35,9 +35,9 @@ describe Contact do
   describe "filter last name by letter" do
 
     before :each do
-      @smith = create(firstname: "John", lastname: "Smith", email: "jsmith@example.com")
-      @jones = create(firstname: "John", lastname: "Jones", email: "jjones@example.com")
-      @johnson = create(firstname: "John", lastname: "Johnson", email: "jjohnson@example.com")
+      @smith = create(:contact, firstname: "John", lastname: "Smith", email: "jsmith@example.com")
+      @jones = create(:contact, firstname: "John", lastname: "Jones", email: "jjones@example.com")
+      @johnson = create(:contact, firstname: "John", lastname: "Johnson", email: "jjohnson@example.com")
       @contacts = Contact.by_letter("J")
     end
 
