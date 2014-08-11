@@ -27,6 +27,10 @@ describe Contact do
     expect(contact).to have(1).errors_on(:email)
   end
 
+  it "has three phone numbers" do
+    expect(create(:contact).phones.count).to eq 3
+  end
+
   it "returns a contact's full name as string" do
     contact = build(:contact, firstname: "Aaron", lastname: "Sumner")
     expect(contact.name).to eq 'Aaron Sumner'
