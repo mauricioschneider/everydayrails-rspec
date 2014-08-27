@@ -158,6 +158,7 @@ describe ContactsController do
         expect(@contact.firstname).to eq("Lawrence")
         expect(@contact.lastname).to eq("Smith")
       end
+
       it "re-renders the :edit template" do
         patch :update, id: @contact, contact: attributes_for(:invalid_contact)
         expect(response).to render_template :edit
@@ -169,8 +170,20 @@ describe ContactsController do
 
   describe "DELETE #destroy" do
 
-    it "deletes the contact from the database"
-    it "redirects to the :index template"
+    before :each do
+      @contact = create(:contact)
+    end
+
+    it "deletes the contact from the database" do
+      expect{
+        delete :destroy, id: @contact
+      }.to change(Contact, :count).by(-1)
+    end
+
+    it "redirects to contacts#index" do
+      delete :destroy, id: @contact
+      expect(response).to redirect_to contacts_url
+    end
 
   end
 
