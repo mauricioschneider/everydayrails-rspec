@@ -36,6 +36,11 @@ describe Contact do
     expect(contact.name).to eq 'Aaron Sumner'
   end
 
+  it "is visible by default" do
+    contact = create(:contact)
+    expect(contact.hidden?).to be(false)
+  end
+
   describe "filter last name by letter" do
 
     before :each do
@@ -54,6 +59,54 @@ describe Contact do
     context "non-matching letters" do
       it "returns a sorted array of results that match" do
         expect(@contacts).to_not include @smith
+      end
+    end
+
+  end
+
+  describe "hiding the contact" do
+
+    before :each do
+      @contact = create(:contact)
+    end
+
+    context "when it's already hidden" do
+      it "stays hidden" do
+        @contact.update_attribute(:hidden, true)
+        expect(@contact.hidden?).to be(true)
+        @contact.change_visibility :hide
+        expect(@contact.hidden?).to be(true)
+      end
+    end
+
+    context "when it's not hidden" do
+      it "hides the contact" do
+        @contact.change_visibility :hide
+        expect(@contact.hidden?).to be(true)
+      end
+    end
+
+  end
+
+  describe "unhiding the contact" do
+
+    before :each do
+      @contact = create(:contact)
+    end
+
+    context "when it's not hidden" do
+      it "stays unhidden" do
+        @contact.change_visibility :unhide
+        expect(@contact.hidden?).to be(false)
+      end
+    end
+
+    context "when it's hidden" do
+      it "unhides it" do
+        @contact.update_attribute(:hidden, true)
+        expect(@contact.hidden?).to be(true)
+        @contact.change_visibility :unhide
+        expect(@contact.hidden?).to be(false)
       end
     end
 

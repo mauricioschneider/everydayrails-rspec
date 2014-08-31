@@ -14,4 +14,12 @@ class Contact < ActiveRecord::Base
   def self.by_letter(letter)
     where("lastname LIKE ?", "#{letter}%").order(:lastname)
   end
+
+  def change_visibility command
+    if command == :hide && !hidden?
+      update_attribute(:hidden, true)
+    elsif command == :unhide && hidden?
+      update_attribute(:hidden, false)
+    end
+  end
 end
