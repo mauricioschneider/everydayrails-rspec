@@ -73,16 +73,16 @@ describe Contact do
     context "when it's already hidden" do
       it "stays hidden" do
         @contact.update_attribute(:hidden, true)
-        expect(@contact.hidden?).to be(true)
+        expect(@contact.reload.hidden?).to be(true)
         @contact.change_visibility :hide
-        expect(@contact.hidden?).to be(true)
+        expect(@contact.reload.hidden?).to be(true)
       end
     end
 
     context "when it's not hidden" do
       it "hides the contact" do
         @contact.change_visibility :hide
-        expect(@contact.hidden?).to be(true)
+        expect(@contact.reload.hidden?).to be(true)
       end
     end
 
@@ -97,16 +97,16 @@ describe Contact do
     context "when it's not hidden" do
       it "stays unhidden" do
         @contact.change_visibility :unhide
-        expect(@contact.hidden?).to be(false)
+        expect(@contact.reload.hidden?).to be(false)
       end
     end
 
     context "when it's hidden" do
       it "unhides it" do
         @contact.update_attribute(:hidden, true)
-        expect(@contact.hidden?).to be(true)
+        expect(@contact.reload.hidden?).to be(true)
         @contact.change_visibility :unhide
-        expect(@contact.hidden?).to be(false)
+        expect(@contact.reload.hidden?).to be(false)
       end
     end
 
